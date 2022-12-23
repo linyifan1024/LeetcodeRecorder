@@ -1,0 +1,38 @@
+{
+    "manifest_version":3,
+    "name":"leetcodeTracker",
+    "description":"Track your leetcode progress!",
+    "version":"1.0",
+    "icons":{
+        "16":"/images/cat1.png",
+        "48":"/images/cat2.png",
+        "128":"/images/cat3.png"
+
+    },
+    "permissions": [
+        "tabs"
+      ],
+    "host_permissions":[
+      
+        "https://leetcode.com/problemset/all/*"
+        
+    ],
+    "action":{
+        "default_icon":{
+            "16":"/images/cat1.png",
+            "48":"/images/cat2.png",
+            "128":"/images/cat3.png"
+        },
+        "default_popup": "popup.html",
+        "default_title": "Fetch LeetCode Problems"
+
+    },
+    "content_scripts":[{
+        "matches":["https://leetcode.com/*"],
+        "css":["popup.css"],
+        "javascript":["background.js"]
+        
+    }]
+
+
+}

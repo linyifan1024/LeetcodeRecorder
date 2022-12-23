@@ -6,7 +6,7 @@
  * we will see how it goes
  */
 
-import {DIFFICULTY, EVENTS, REVERSE_DIFFICULTY} from "./const.js";
+import {DIFFICULTY, EVENTS, REVERSE_DIFFICULTY} from "./const.ts";
 import { onMessage } from 'webext-bridge'
 
 class LeetCoder {
@@ -56,6 +56,13 @@ class LeetCoder {
 
 const leetcoder = new LeetCoder();
 
+const formatProblems = problems => problems.map((problem) => ({
+  title: problem.stat.question__title,
+  id: problem.stat.frontend_question_id,
+  difficulty: REVERSE_DIFFICULTY[problem.difficulty.level],
+  link: problem.stat.question__title_slug
+}))
+
 onMessage(EVENTS.GET_DATA, async () => {
   // if not loaded, wait for it to load
   if (!leetcoder.loaded)
@@ -63,12 +70,7 @@ onMessage(EVENTS.GET_DATA, async () => {
 
   return {
     data: leetcoder.data,
-    problems: leetcoder.problems.map((problem) => ({
-      title: problem.stat.question__title,
-      id: problem.stat.frontend_question_id,
-      difficulty: REVERSE_DIFFICULTY[problem.difficulty.level],
-      link: problem.stat.question__title_slug
-    })),
+    problems: formatProblems(leetcoder.problems),
     stats: leetcoder.stats,
   };
 });
@@ -76,6 +78,6 @@ onMessage(EVENTS.GET_DATA, async () => {
 onMessage(EVENTS.REFRESH_PROBLEM, async () => {
   await leetcoder.refreshProblems();
   return {
-    problems: leetcoder.problems
+    problems: formatProblems(leetcoder.problems),
   };
 })

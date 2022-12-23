@@ -6,19 +6,22 @@ import { EVENTS, REVERSE_DIFFICULTY } from '../../const.js'
 function App() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [data, setData] = useState({});
+  const [problems, setProblems] = useState([])
   useEffect(async () => {
     const data = await sendMessage(EVENTS.GET_DATA, {}, 'background');
-    setData(data)
+    setData(data);
+    setProblems(data.problems);
     setIsLoading(false);
   }, [])
 
   if(isLoading) {
-    return <div>loading...</div>
+    return <div
+      className="w-[300px] h-[100px] flex justify-center items-center text-lg"
+    >loading...</div>
   }
 
-  console.log(data)
-
   return <div className="w-[300px] p-[12px] space-y-[12px]">
+
     {/* 1. current progress */}
     <div>
       <div className="text-lg"> Current Progress </div>
@@ -28,12 +31,13 @@ function App() {
         ))}
       </div>
     </div>
+
     {/* 2. daily challenge */}
     <div>
       <div className="text-lg"> Daily Challenge </div>
       <div>
         {
-          data.problems.map((problem) => (
+          problems.map((problem) => (
             <div className="truncate overflow-ellipsis">
               <a href={`https://leetcode.com/problems/${problem.link}/`} target="_blank">
                 {problem.id} - {problem.difficulty} - {problem.title}
@@ -43,6 +47,14 @@ function App() {
         }
       </div>
     </div>
+
+    <button onClick={
+      async () => {
+        const data = await sendMessage(EVENTS.REFRESH_PROBLEM, {}, 'background')
+        setProblems(data.problems)
+      }} type="button">
+        Refresh
+    </button>
   </div>
 }
 

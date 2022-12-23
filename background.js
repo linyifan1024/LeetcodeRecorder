@@ -14,8 +14,9 @@ class LeetCoder {
     this.loaded = false;
     this.allProblems = [];
     this.problems = [];
-    this.init();
+    this.stats = [];
     this.lastUpdated = new Date();
+    this.init();
   }
   /**
    * Fetches all problems from LeetCode
@@ -24,8 +25,10 @@ class LeetCoder {
   async init() {
     const response = await fetch('https://leetcode.com/api/problems/algorithms/');
     const data = await response.json();
+    this.data = data;
     this.allProblems = data.stat_status_pairs;
     this.loaded = true;
+    this.getStats()
     this.refreshProblems();
   }
   /**
@@ -43,6 +46,12 @@ class LeetCoder {
       hard[Math.floor(Math.random() * hard.length)],
     ];
   }
+  async getStats() {
+    if(!this.loaded)
+      await this.init();
+    const { ac_easy, ac_medium, ac_hard } = this.data
+    this.stats = [ac_easy, ac_medium, ac_hard]
+  }
 }
 
 const leetcoder = new LeetCoder();
@@ -59,3 +68,10 @@ onMessage(EVENTS.REFRESH_PROBLEM, async () => {
   await leetcoder.refreshProblems();
   return { problems: leetcoder.problems };
 })
+
+onMessage(EVENTS.GET_STAT, async () => {
+  await leetcoder.getStats();
+  return { stats: leetcoder.stats };
+})
+
+

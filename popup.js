@@ -90,6 +90,18 @@ import { sendMessage } from 'webext-bridge'
 // }
 
 
+/**
+ *
+ * @param {stats: number[]} data
+ */
+const renderProgress = (data) => {
+  data.stats.forEach((item, idx) => {
+    document.querySelector('#datalist').innerHTML +=
+    `<span> ${REVERSE_DIFFICULTY[idx+1]}: ${item} </span>`;
+  })
+
+}
+
 
 /**
  *
@@ -100,16 +112,35 @@ const renderProblems = (data) => {
     title: problem.stat.question__title,
     id: problem.stat.frontend_question_id,
     difficulty: REVERSE_DIFFICULTY[problem.difficulty.level],
+    link: problem.stat.question__title_slug
   }))
-  console.warn(problems)
-  // your code here @linyifan
+
+  let newProblemsInnerHTML = ''
+
+  problems.forEach((problem) =>
+    newProblemsInnerHTML +=
+      `<li class="list-group-item list-group-item-action list-group-item-${problem.difficulty.toLowerCase()}">
+        <input type="checkbox" value="${problem.id}" />
+        <a href="https://leetcode.com/problems/${problem.link}/" target="_blank">${problem.id} - ${problem.difficulty} - ${problem.title}</a>
+      </li>`)
+
+  document.querySelector('#problemlist').innerHTML = newProblemsInnerHTML
 }
 
 
 
 
-
 document.addEventListener('DOMContentLoaded', async () => {
-  const data = await sendMessage(EVENTS.GET_PROBLEM, {}, 'background');
-  renderProblems(data);
+  const problems = await sendMessage(EVENTS.GET_PROBLEM, {}, 'background');
+  renderProblems(problems);
+  const stats = await sendMessage(EVENTS.GET_STAT, {}, 'background');
+  renderProgress(stats);
+})
+
+
+
+// fetch-button
+document.querySelector('#fetch-button').addEventListener('click', async () => {
+  const problems = await sendMessage(EVENTS.REFRESH_PROBLEM, {}, 'background');
+  renderProblems(problems);
 })

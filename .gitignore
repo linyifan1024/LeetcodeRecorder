@@ -1,7 +1,10 @@
-node_modules/
+# editor
 .idea/
-.vscode/
-.DS_Store
-yarn-error.log
 
+# macOS
+.DS_Store
+
+# dev/build
+yarn-error.log
 dist/
+node_modules/

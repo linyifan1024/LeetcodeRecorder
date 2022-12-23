@@ -47,26 +47,6 @@ class LeetCoder {
 
 const leetcoder = new LeetCoder();
 
-
-chrome.runtime.onConnect.addListener(port => {
-  port.onMessage.addListener(msg => {
-    if (msg.type === EVENTS.GET_PROBLEM) {
-      // if we have already loaded the problems, send them back
-      if (leetcoder.loaded)
-        return port.postMessage({ problems: leetcoder.problems });
-      // otherwise, wait for the problems to load
-      leetcoder.init().then(() => {
-        port.postMessage({ problems: leetcoder.problems });
-      });
-    }
-
-    else if (msg.type === EVENTS.REFRESH_PROBLEM) {
-      leetcoder.getProblems();
-      port.postMessage({ problems: leetcoder.problems });
-    }
-  });
-})
-
 onMessage(EVENTS.GET_PROBLEM, async () => {
   // if not loaded, wait for it to load
   if (!leetcoder.loaded)

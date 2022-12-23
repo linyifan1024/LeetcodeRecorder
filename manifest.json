@@ -1,38 +1,30 @@
 {
-    "manifest_version":3,
     "name":"leetcodeTracker",
     "description":"Track your leetcode progress!",
-    "version":"1.0",
+    "{{chrome}}.manifest_version": 3,
+    "{{firefox}}.manifest_version": 2,
     "icons":{
-        "16":"/images/cat1.png",
-        "48":"/images/cat2.png",
-        "128":"/images/cat3.png"
-
+        "16": "/icon/cat1.png",
+        "48": "/icon/cat2.png",
+        "128": "/icon/cat3.png"
     },
     "permissions": [
         "tabs"
       ],
     "host_permissions":[
-      
         "https://leetcode.com/problemset/all/*"
-        
+
     ],
-    "action":{
-        "default_icon":{
-            "16":"/images/cat1.png",
-            "48":"/images/cat2.png",
-            "128":"/images/cat3.png"
-        },
-        "default_popup": "popup.html",
-        "default_title": "Fetch LeetCode Problems"
 
+    "{{chrome}}.action": {
+        "default_popup": "popup.html"
     },
-    "content_scripts":[{
-        "matches":["https://leetcode.com/*"],
-        "css":["popup.css"],
-        "javascript":["background.js"]
-        
-    }]
+    "{{firefox}}.browser_action": {
+        "default_popup": "popup.html"
+    },
 
-
+    "background": {
+        "{{chrome}}.service_worker": "background.js",
+        "{{firefox}}.scripts": ["background.js"]
+    }
 }

@@ -1,5 +1,19 @@
 {
+  "name": "leetcode-recorder",
   "dependencies": {
-    "bootstrap": "^5.2.3"
+    "bootstrap": "^5.2.3",
+    "webext-bridge": "^5.0.5"
+  },
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite build --mode development --watch",
+    "build": "vite build"
+  },
+  "devDependencies": {
+    "vite": "^4.0.0",
+    "vite-plugin-web-extension": "^1.4.8",
+    "webextension-polyfill": "^0.10.0"
   }
 }

@@ -6,7 +6,7 @@
  * we will see how it goes
  */
 
-import {DIFFICULTY, EVENTS} from "./const.js";
+import {DIFFICULTY, EVENTS, REVERSE_DIFFICULTY} from "./const.js";
 import { onMessage } from 'webext-bridge'
 
 class LeetCoder {
@@ -56,22 +56,26 @@ class LeetCoder {
 
 const leetcoder = new LeetCoder();
 
-onMessage(EVENTS.GET_PROBLEM, async () => {
+onMessage(EVENTS.GET_DATA, async () => {
   // if not loaded, wait for it to load
   if (!leetcoder.loaded)
     await leetcoder.init();
 
-  return { problems: leetcoder.problems };
+  return {
+    data: leetcoder.data,
+    problems: leetcoder.problems.map((problem) => ({
+      title: problem.stat.question__title,
+      id: problem.stat.frontend_question_id,
+      difficulty: REVERSE_DIFFICULTY[problem.difficulty.level],
+      link: problem.stat.question__title_slug
+    })),
+    stats: leetcoder.stats,
+  };
 });
 
 onMessage(EVENTS.REFRESH_PROBLEM, async () => {
   await leetcoder.refreshProblems();
-  return { problems: leetcoder.problems };
+  return {
+    problems: leetcoder.problems
+  };
 })
-
-onMessage(EVENTS.GET_STAT, async () => {
-  await leetcoder.getStats();
-  return { stats: leetcoder.stats };
-})
-
-

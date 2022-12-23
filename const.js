@@ -2,6 +2,7 @@ export const EVENTS = {
   GET_PROBLEM: 'GET_PROBLEM',
   REFRESH_PROBLEM: 'REFRESH_PROBLEM',
   GET_STAT: 'GET_STAT',
+  GET_DATA: 'GET_DATA'
 }
 
 export const DIFFICULTY = {

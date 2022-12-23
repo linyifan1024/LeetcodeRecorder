@@ -1,7 +1,10 @@
 {
   "name": "leetcode-recorder",
   "dependencies": {
+    "@vitejs/plugin-react": "^3.0.0",
     "bootstrap": "^5.2.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "webext-bridge": "^5.0.5"
   },
   "private": true,
@@ -12,6 +15,9 @@
     "build": "vite build"
   },
   "devDependencies": {
+    "autoprefixer": "^10.4.13",
+    "postcss": "^8.4.20",
+    "tailwindcss": "^3.2.4",
     "vite": "^4.0.0",
     "vite-plugin-web-extension": "^1.4.8",
     "webextension-polyfill": "^0.10.0"

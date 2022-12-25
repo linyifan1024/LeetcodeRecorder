@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import { sendMessage } from "webext-bridge";
 import { EVENTS, REVERSE_DIFFICULTY } from '../../const.js'
-
+import './style.css';
 
 function App() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -24,22 +24,31 @@ function App() {
 
     {/* 1. current progress */}
     <div>
-      <div className="text-lg"> Current Progress </div>
+      <div className="text-lg section-title"> Current Progress </div>
+
       <div className="flex space-x-[5px]">
         {data.stats.map((count, idx) => (
-          <span>{`${REVERSE_DIFFICULTY[idx+1]}: ${count}`}</span>
+          <span style={{color: 
+            REVERSE_DIFFICULTY[idx+1] === 'Easy' ? 'green' :
+            REVERSE_DIFFICULTY[idx+1] === 'Medium' ? 'orange' :
+            'red'
+          }}>{`${REVERSE_DIFFICULTY[idx+1]}: ${count}`}</span>
         ))}
       </div>
     </div>
-
+          
     {/* 2. daily challenge */}
     <div>
-      <div className="text-lg"> Daily Challenge </div>
+      <div className="text-lg section-title"> Daily Challenge </div>
       <div>
         {
           problems.map((problem) => (
             <div className="truncate overflow-ellipsis">
-              <a href={`https://leetcode.com/problems/${problem.link}/`} target="_blank">
+              <a href={`https://leetcode.com/problems/${problem.link}/`} target="_blank" style={{color: 
+            problem.difficulty === 'Easy' ? 'green' :
+            problem.difficulty === 'Medium' ? 'orange' :
+            'red'
+          }}>
                 {problem.id} - {problem.difficulty} - {problem.title}
               </a>
             </div>
